@@ -8,7 +8,7 @@
 
 ## 安装
 
-1. 进入 [Releases]() 界面下载最新版本
+1. 进入 [Releases](https://github.com/HanleyLee/alfred-eudic-workflow/releases) 界面下载最新版本
 2. 双击 `Eudic Search.alfredworkflow` 文件导入 Alfred
 3. 进入`Alfred Preference` → `Workflow` → `Eudic Search`, 双击 `Hotkey` 设置启动本 Workflow 的快捷键, 建议设置为 `双击 ⌥ 键`
 
@@ -39,6 +39,7 @@
 ## 待完善
 
 - 设置自动更新
+- 支持 App Store 版本的 Eudic(目前仅在官网下载版本上通过完整测试)
 
 ## 参考
 
