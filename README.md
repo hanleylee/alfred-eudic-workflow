@@ -1,5 +1,9 @@
 # alfred-eudic-workflow
 
+![GitHub last commit](https://img.shields.io/github/last-commit/hanleylee/alfred-eudic-workflow)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/hanleylee/alfred-eudic-workflow)
+![GitHub](https://img.shields.io/github/license/hanleylee/alfred-eudic-workflow)
+
 通过 **Alfred** 与 **Eudic** 快速查询 **当前已选择单词** 或 **搜索单词**
 
 ## 目标群体
@@ -12,7 +16,7 @@
 2. 双击 `Eudic Search.alfredworkflow` 文件导入 Alfred
 3. 进入`Alfred Preference` → `Workflow` → `Eudic Search`, 双击 `Hotkey` 设置启动本 Workflow 的快捷键, 建议设置为 `双击 ⌥ 键`
 
-    ![himg](https://a.hanleylee.com/HKMS/2020-02-10-071031.png?x-oss-process=style/WaMa)
+    ![hot-key](img/hot-key-settings.png)
 
 4. 安装完成
 
@@ -22,9 +26,9 @@
 
 1. **双击 ⌥ 键, 在有选择文本情况下直接进入 `Eudic` 释义界面, 无选择文本情况下进入自定义搜索界面**
 
-    ![himg](https://a.hanleylee.com/HKMS/2020-02-10-searchwithourselection.gif)
+    ![toggle](img/toggle-to-input.gif)
 
-    ![himg](https://a.hanleylee.com/HKMS/2020-02-10-searchwithselection.gif)
+    ![search-selected](img/search-selected.gif)
 
 2. `Alfred` 搜索框中输入关键字 `e` 进行搜索
 
