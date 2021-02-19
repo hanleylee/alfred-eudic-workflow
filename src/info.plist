@@ -161,7 +161,10 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "System Events"	# 获得当前应用名	set frontApp to name of first application process whose frontmost is true		do shell script "open -b com.eusoft.eudic"		tell application id "com.eusoft.eudic"			activate			show dic with word "{query}"		end tellend tell</string>
+				<string>tell application "System Events"
+    do shell script "open -b com.eusoft.eudic"
+
+    tell application id "com.eusoft.eudic"        activate        show dic with word "{query}"    end tellend tell</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -188,11 +191,11 @@
 				<key>focusedappvariablename</key>
 				<string></string>
 				<key>hotkey</key>
-				<integer>-1</integer>
+				<integer>49</integer>
 				<key>hotmod</key>
 				<integer>524288</integer>
 				<key>hotstring</key>
-				<string>double tap</string>
+				<string>Space</string>
 				<key>leftcursor</key>
 				<false/>
 				<key>modsmode</key>
@@ -424,7 +427,7 @@ echo $updater-&gt;fetchReleases();
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>快速搜索 Eudic 单词</string>
 	<key>uidata</key>
 	<dict>
 		<key>138977FA-CDC3-4EA1-BFD6-97D2A311A279</key>
@@ -508,7 +511,7 @@ echo $updater-&gt;fetchReleases();
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.0.0</string>
+	<string>1.1.0</string>
 	<key>webaddress</key>
 	<string>https://www.hanleylee.com</string>
 </dict>

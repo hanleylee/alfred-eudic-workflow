@@ -38,12 +38,12 @@
 
 ### 手动更新
 
-`Alfred` 搜索框中输入`update`进行更新本 Workflow
+`Alfred` 搜索框中输入 `update` 进行更新本 Workflow
 
 ## 待完善
 
 - 设置自动更新
-- 支持 App Store 版本的 Eudic(目前仅在官网下载版本上通过完整测试)
+- 支持 App Store 版本的 Lite 版本 (目前支持 **官网版本** 与 **App Store 专业版**)
 
 ## 参考
 
@@ -53,7 +53,7 @@
 
 本仓库的所有代码基于 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 进行分发与使用. 协议全文见 [LICENSE](https://github.com/HanleyLee/alfred-eudic-workflow/blob/master/LICENSE) 文件.
 
-Copyright 2020 HanleyLee
+Copyright 2021 HanleyLee
 
 ---
 
