@@ -51,7 +51,8 @@
 
 ## 开源许可
 
-本仓库的所有代码基于 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 进行分发与使用. 协议全文见 [LICENSE](https://github.com/HanleyLee/alfred-eudic-workflow/blob/master/LICENSE) 文件.
+本仓库的所有代码基于 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 进行分发与使用. 协议全文见
+[LICENSE](https://github.com/HanleyLee/alfred-eudic-workflow/blob/master/LICENSE) 文件.
 
 Copyright 2021 HanleyLee
 

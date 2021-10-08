@@ -4,6 +4,8 @@
 <dict>
 	<key>bundleid</key>
 	<string>com.hanleylee.alfred-eudic-workflow</string>
+	<key>category</key>
+	<string>Productivity</string>
 	<key>connections</key>
 	<dict>
 		<key>138977FA-CDC3-4EA1-BFD6-97D2A311A279</key>
@@ -161,10 +163,7 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>tell application "System Events"
-    do shell script "open -b com.eusoft.eudic"
-
-    tell application id "com.eusoft.eudic"        activate        show dic with word "{query}"    end tellend tell</string>
+				<string>tell application "System Events"	# 获得当前应用名	set frontApp to name of first application process whose frontmost is true		do shell script "open -b com.eusoft.eudic"		tell application id "com.eusoft.eudic"			activate			show dic with word "{query}"		end tellend tell</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -303,23 +302,59 @@ end tell</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>2</integer>
-				<key>keyword</key>
-				<string>update</string>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Fetching Github Release</string>
+				<key>script</key>
+				<string>&lt;?php
+
+require('src/Updater.php');
+
+$version = '1.0.0';
+
+$updater = new Updater($version);
+
+echo $updater-&gt;fetchReleases();
+
+?&gt;</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>subtext</key>
-				<string>Press Enter to Confirm</string>
-				<key>text</key>
-				<string>Update EudicSearch Workflow</string>
+				<string></string>
+				<key>title</key>
+				<string>Looking for latest version...</string>
+				<key>type</key>
+				<integer>1</integer>
 				<key>withspace</key>
 				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
+			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>13EFA1A7-63E6-4CA5-A26B-D9A55C022DE9</string>
+			<string>EB8E8B57-E059-4F7D-BFC2-A555F9599BD5</string>
 			<key>version</key>
-			<integer>1</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -358,59 +393,23 @@ end tell</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>alfredfiltersresults</key>
-				<true/>
-				<key>alfredfiltersresultsmatchmode</key>
-				<integer>0</integer>
-				<key>argumenttreatemptyqueryasnil</key>
-				<false/>
-				<key>argumenttrimmode</key>
-				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>2</integer>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>queuedelaycustom</key>
-				<integer>3</integer>
-				<key>queuedelayimmediatelyinitially</key>
-				<true/>
-				<key>queuedelaymode</key>
-				<integer>0</integer>
-				<key>queuemode</key>
-				<integer>1</integer>
-				<key>runningsubtext</key>
-				<string>Fetching Github Release</string>
-				<key>script</key>
-				<string>&lt;?php
-
-require('Updater.php');
-
-$version = '1.0.0';
-
-$updater = new Updater($version);
-
-echo $updater-&gt;fetchReleases();
-
-?&gt;</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
+				<key>keyword</key>
+				<string>update</string>
 				<key>subtext</key>
-				<string></string>
-				<key>title</key>
-				<string>Looking for latest version...</string>
-				<key>type</key>
-				<integer>1</integer>
+				<string>Press Enter to Confirm</string>
+				<key>text</key>
+				<string>Update EudicSearch Workflow</string>
 				<key>withspace</key>
 				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
+			<string>alfred.workflow.input.keyword</string>
 			<key>uid</key>
-			<string>EB8E8B57-E059-4F7D-BFC2-A555F9599BD5</string>
+			<string>13EFA1A7-63E6-4CA5-A26B-D9A55C022DE9</string>
 			<key>version</key>
-			<integer>3</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -427,7 +426,7 @@ echo $updater-&gt;fetchReleases();
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>快速搜索 Eudic 单词</string>
+	<string>通过 Alfred 与 Eudic 快速查询 当前已选择单词 或 搜索单词</string>
 	<key>uidata</key>
 	<dict>
 		<key>138977FA-CDC3-4EA1-BFD6-97D2A311A279</key>
