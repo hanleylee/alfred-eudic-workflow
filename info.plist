@@ -161,15 +161,15 @@
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>102</integer>
 				<key>script</key>
-				<string>tell application "System Events"	# 获得当前应用名	set frontApp to name of first application process whose frontmost is true		do shell script "open -b com.eusoft.eudic"		tell application id "com.eusoft.eudic"			activate			show dic with word "{query}"		end tellend tell</string>
+				<string>./src/search_eudic.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>type</key>
-				<integer>6</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
@@ -243,31 +243,17 @@
 			<key>config</key>
 			<dict>
 				<key>concurrently</key>
-				<true/>
+				<false/>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>102</integer>
 				<key>script</key>
-				<string>tell application "System Events"
-	# 获得当前应用名
-	set frontApp to name of first application process whose frontmost is true
-	
-	if frontApp is "Eudic" then
-		keystroke "h" using command down
-	else
-		do shell script "open -b com.eusoft.eudic"
-		tell application id "com.eusoft.eudic"
-			activate
-			show dic with word "{query}"
-		end tell
-	end if
-	
-end tell</string>
+				<string>./src/search_eudic.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>type</key>
-				<integer>6</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
@@ -282,15 +268,15 @@ end tell</string>
 				<key>concurrently</key>
 				<false/>
 				<key>escaping</key>
-				<integer>68</integer>
+				<integer>102</integer>
 				<key>script</key>
-				<string>tell application id "com.eusoft.eudic"	speak word with word "{query}"end tell</string>
+				<string>./src/speak_eudic.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>type</key>
-				<integer>6</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
@@ -298,6 +284,61 @@ end tell</string>
 			<string>551B6DD5-E891-46CF-8692-243A4AE4CBED</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>update</string>
+				<key>subtext</key>
+				<string>Press Enter to Confirm</string>
+				<key>text</key>
+				<string>Update EudicSearch Workflow</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>13EFA1A7-63E6-4CA5-A26B-D9A55C022DE9</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>openwith</key>
+				<string></string>
+				<key>sourcefile</key>
+				<string>~/Downloads/EudicSearch.alfredworkflow</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openfile</string>
+			<key>uid</key>
+			<string>4F8275E3-7428-4CD8-95B7-867E906FB913</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>EAD07727-8ECB-4390-85F2-3B1F5FCC780C</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -355,61 +396,6 @@ echo $updater-&gt;fetchReleases();
 			<string>EB8E8B57-E059-4F7D-BFC2-A555F9599BD5</string>
 			<key>version</key>
 			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>openwith</key>
-				<string></string>
-				<key>sourcefile</key>
-				<string>~/Downloads/EudicSearch.alfredworkflow</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openfile</string>
-			<key>uid</key>
-			<string>4F8275E3-7428-4CD8-95B7-867E906FB913</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>browser</key>
-				<string></string>
-				<key>spaces</key>
-				<string></string>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>EAD07727-8ECB-4390-85F2-3B1F5FCC780C</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>2</integer>
-				<key>keyword</key>
-				<string>update</string>
-				<key>subtext</key>
-				<string>Press Enter to Confirm</string>
-				<key>text</key>
-				<string>Update EudicSearch Workflow</string>
-				<key>withspace</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>13EFA1A7-63E6-4CA5-A26B-D9A55C022DE9</string>
-			<key>version</key>
-			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -510,7 +496,7 @@ echo $updater-&gt;fetchReleases();
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
-	<string>1.1.0</string>
+	<string>1.2.0</string>
 	<key>webaddress</key>
 	<string>https://www.hanleylee.com</string>
 </dict>
