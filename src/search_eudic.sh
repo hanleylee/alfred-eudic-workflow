@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
-eudicID=$(osascript -e 'id of app "Eudic"')
+if [[ -d /Applications/Eudb_en_free.app ]]; then
+    eudicID=$(osascript -e 'id of app "Eudb_en_free"')
+elif [[ -d /Applications/Eudic.app ]]; then
+    eudicID=$(osascript -e 'id of app "Eudic"')
+fi
+
+if [[ -z "$eudicID" ]]; then
+osascript <<EOF
+display dialog "Please install EuDic"
+EOF
+   exit
+fi
 
 osascript <<EOF
 tell application "System Events"
