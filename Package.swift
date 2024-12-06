@@ -19,6 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMajor(from: "1.5.0")),
+        .package(url: "https://github.com/stephencelis/SQLite.swift.git", from: "0.15.3"),
         dependency_AlfredWorkflowUtils,
     ],
     targets: [
@@ -36,6 +37,7 @@ let package = Package(
             name: "SimpleDictionaryCore",
             dependencies: [
                 .product(name: "AlfredWorkflowUpdater", package: "alfred-workflow-utils"),
+                .product(name: "SQLite", package: "SQLite.swift"),
             ],
             path: "Sources/SimpleDictionaryCore",
             resources: [

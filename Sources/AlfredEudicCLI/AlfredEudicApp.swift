@@ -1,4 +1,5 @@
 import Foundation
+import QuartzCore
 
 @main
 struct AlfredEudicApp {
@@ -6,5 +7,3 @@ struct AlfredEudicApp {
         await Command.main()
     }
 }
-
-

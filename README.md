@@ -4,7 +4,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/hanleylee/alfred-eudic-workflow)
 ![GitHub](https://img.shields.io/github/license/hanleylee/alfred-eudic-workflow)
 
-通过 **Alfred** 与 **Eudic** 快速查询 **当前已选择单词** 或 **搜索单词**
+通过 **Alfred** + [ECDICT][ECDICT] + **Eudic** 快速查询 **当前已选择单词** 或 **搜索单词**
 
 ## 目标群体
 
@@ -12,7 +12,7 @@
 
 ## 安装
 
-1. 进入 [Releases](https://github.com/HanleyLee/alfred-eudic-workflow/releases) 界面下载最新版本
+1. 进入 [Releases](https://github.com/hanleylee/alfred-eudic-workflow/releases) 界面下载最新版本
 2. 双击 `Eudic Search.alfredworkflow` 文件导入 Alfred
 3. 进入`Alfred Preference` → `Workflow` → `Eudic Search`, 双击 `Hotkey` 设置启动本 Workflow 的快捷键, 建议设置为 `双击 ⌥ 键`
 
@@ -36,26 +36,35 @@
 
 搜索框激活情况下按下 `⌘ ⏎` 将由 `Eudic` 朗读单词发音
 
-### 手动更新
+### 搜索列表
 
-`Alfred` 搜索框中输入 `update` 进行更新本 Workflow
+默认情况下使用内置轻量单词列表将前缀匹配项列出, 同时支持配置 [ECDICT][ECDICT] 的 sqlite 文件进行模糊查找
 
-## TODO
+![ecdict-search](img/ecdict-search.png)
 
-- [ ] 设置自动更新
+ECDICT 配置方式: [Releases](https://github.com/hanleylee/alfred-eudic-workflow/releases) 界面下载 *ecdict.db* 文件, 并在 workflow 中配置 *Database* 选项
+
+## Feature
+
 - [x] 支持 App Store 版本的 Lite 版本 (目前支持 **官网版本** 与 **App Store 专业版**)
+- [x] 支持内置单词列表进行前缀模糊匹配
+- [x] 支持配置 ECDICT 进行模糊匹配并实时展示解释
+- [ ] 设置自动更新
 
 ## 参考
 
 - [wensonsmith/YoudaoTranslate](https://github.com/wensonsmith/YoudaoTranslate)
+- [ECDICT][ECDICT]
 
 ## 开源许可
 
 本仓库的所有代码基于 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 进行分发与使用. 协议全文见
-[LICENSE](https://github.com/HanleyLee/alfred-eudic-workflow/blob/master/LICENSE) 文件.
+[LICENSE](https://github.com/hanleylee/alfred-eudic-workflow/blob/master/LICENSE) 文件.
 
 Copyright 2021 HanleyLee
 
 ---
 
 欢迎使用, 有任何 bug, 希望给我提 issues. 如果对你有用的话请标记一颗星星 ⭐️
+
+[ECDICT]: https://github.com/skywind3000/ECDICT
