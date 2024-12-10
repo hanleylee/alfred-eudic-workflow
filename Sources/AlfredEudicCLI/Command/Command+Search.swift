@@ -5,6 +5,7 @@
 //  Created by Hanley Lee on 2024/12/5.
 //
 
+import AlfredCore
 import AlfredWorkflowScriptFilter
 import AlfredWorkflowUpdaterCore
 import ArgumentParser
@@ -72,6 +73,22 @@ struct SearchCommand: AsyncParsableCommand {
 
         let t2 = CACurrentMediaTime()
         fputs("search time duration: \(t2 - t1)\n", stderr)
+
+        let updater = Updater(githubRepo: CommonTools.githubRepo, workflowAssetName: CommonTools.workflowAssetName)
+
+        if let release = updater.latestReleaseInfo, let currentVersion = AlfredConst.workflowVersion {
+            if currentVersion.compare(release.tagName, options: .numeric) == .orderedAscending {
+                ScriptFilter.item(
+                    Item(title: "New version available on GitHub, type [Enter] to update")
+                        .subtitle("current version: \(currentVersion), remote version: \(release.tagName)")
+                        .arg("update")
+                        .variable(.init(name: "HAS_UPDATE", value: "1"))
+                )
+            }
+        }
+        Task {
+            try await updater.check(maxCacheAge: 1440)
+        }
 
         print(ScriptFilter.output())
     }

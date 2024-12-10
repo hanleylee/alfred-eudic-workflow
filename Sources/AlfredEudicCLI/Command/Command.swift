@@ -18,7 +18,7 @@ struct Command: AsyncParsableCommand {
         discussion: "",
         subcommands: [
             SearchCommand.self,
-//            UpdateCommand.self,
+            UpdateCommand.self,
         ]
     )
 

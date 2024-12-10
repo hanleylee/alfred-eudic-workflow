@@ -5,6 +5,7 @@
 //  Created by Hanley Lee on 2024/12/7.
 //
 
+import AlfredCore
 import AlfredWorkflowUpdaterCore
 import CryptoKit
 import Foundation

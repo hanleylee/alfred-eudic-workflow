@@ -49,7 +49,7 @@ ECDICT 配置方式: [Releases](https://github.com/hanleylee/alfred-eudic-workfl
 - [x] 支持 App Store 版本的 Lite 版本 (目前支持 **官网版本** 与 **App Store 专业版**)
 - [x] 支持内置单词列表进行前缀模糊匹配
 - [x] 支持配置 ECDICT 进行模糊匹配并实时展示解释
-- [ ] 设置自动更新
+- [x] 设置自动更新
 
 ## 参考
 
