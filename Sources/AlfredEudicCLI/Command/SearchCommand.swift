@@ -42,16 +42,7 @@ struct SearchCommand: AsyncParsableCommand {
 
         var items: [Item] = []
 
-        if config.dbFile == nil || config.dbFile!.isEmpty { // query completion list
-            let matches = await dictionaryManager.findMatchesInCompletion(spell: spell, limit: 30)
-
-            for word in matches {
-                items.append(
-                    Item(title: word)
-                        .arg(word)
-                )
-            }
-        } else { // query database
+        if let dbFile = config.dbFile, FileManager.default.fileExists(atPath: dbFile) { // query database
             let matches = dictionaryManager.findMatchesInDB(spells: spell.split(separator: " ").map { String($0) }, limit: 30)
             for entry in matches {
                 items.append(
@@ -64,8 +55,17 @@ struct SearchCommand: AsyncParsableCommand {
                         )
                 )
             }
+        } else { // query completion list
+            let matches = await dictionaryManager.findMatchesInCompletion(spell: spell, limit: 30)
+
+            for word in matches {
+                items.append(
+                    Item(title: word)
+                        .arg(word)
+                )
+            }
         }
-        if items.isEmpty || items.first?.title.lowercased() != spell.lowercased() {
+        if items.isEmpty || !items.contains(where: { $0.title.lowercased() == spell.lowercased() }) {
             items.insert(contentsOf: [Item(title: spell).arg(spell).subtitle("Type enter to check in Eudic")], at: 0)
         }
         items.forEach { ScriptFilter.item($0) }
