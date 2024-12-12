@@ -46,9 +46,10 @@ struct SearchCommand: AsyncParsableCommand {
         if let dbFile = config.dbFile, FileManager.default.fileExists(atPath: dbFile) { // query database
             let matches = dictionaryManager.findMatchesInDB(spells: spell.split(separator: " ").map { String($0) }, limit: 30)
             for entry in matches {
+                let explainations = (entry.translation ?? entry.definition)?.components(separatedBy: .newlines).joined(separator: "; ")
                 items.append(
                     Item(title: entry.word)
-                        .subtitle(entry.translation ?? entry.definition ?? "")
+                        .subtitle(explainations ?? "")
                         .arg(entry.word)
                         .mods(
                             Cmd().subtitle(entry.exchangeInfo ?? ""),
