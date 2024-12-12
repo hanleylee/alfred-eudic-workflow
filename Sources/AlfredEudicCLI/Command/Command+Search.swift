@@ -45,7 +45,7 @@ struct SearchCommand: AsyncParsableCommand {
 
         var items: [Item] = []
 
-        if let dbFile = config.dbFile { // query database
+        if let dbFile = config.dbFile, !dbFile.isEmpty { // query database
             if FileManager.default.fileExists(atPath: dbFile) {
                 let matches = dictionaryManager.findMatchesInDB(spells: spell.split(separator: " ").map { String($0) }, limit: limit)
                 for entry in matches {
