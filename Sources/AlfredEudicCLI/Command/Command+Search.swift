@@ -25,12 +25,14 @@ struct SearchCommand: AsyncParsableCommand {
     @Argument(help: "Spell of the word you want to query")
     var spell: String = "are"
 
+    let limit: Int = 30
+
     func validate() throws {}
 
     func run() async throws {
         guard spell.count > 1 else {
             ScriptFilter.item(Item(title: "Input more than one letter"))
-            print(ScriptFilter.output())
+            AlfredUtils.output(ScriptFilter.output())
             return
         }
 
@@ -43,22 +45,26 @@ struct SearchCommand: AsyncParsableCommand {
 
         var items: [Item] = []
 
-        if let dbFile = config.dbFile, FileManager.default.fileExists(atPath: dbFile) { // query database
-            let matches = dictionaryManager.findMatchesInDB(spells: spell.split(separator: " ").map { String($0) }, limit: 30)
-            for entry in matches {
-                let explainations = (entry.translation ?? entry.definition)?.components(separatedBy: .newlines).joined(separator: "; ")
-                items.append(
-                    Item(title: entry.word)
-                        .subtitle(explainations ?? "")
-                        .arg(entry.word)
-                        .mods(
-                            Cmd().subtitle(entry.exchangeInfo ?? ""),
-                            Alt().subtitle(entry.phonetic ?? "")
-                        )
-                )
+        if let dbFile = config.dbFile { // query database
+            if FileManager.default.fileExists(atPath: dbFile) {
+                let matches = dictionaryManager.findMatchesInDB(spells: spell.split(separator: " ").map { String($0) }, limit: limit)
+                for entry in matches {
+                    let explainations = (entry.translation ?? entry.definition)?.components(separatedBy: .newlines).joined(separator: "; ")
+                    items.append(
+                        Item(title: entry.word)
+                            .subtitle(explainations ?? "")
+                            .arg(entry.word)
+                            .mods(
+                                Cmd().subtitle(entry.exchangeInfo ?? ""),
+                                Alt().subtitle(entry.phonetic ?? "")
+                            )
+                    )
+                }
+            } else {
+                items.append(Item(title: "dbFile not exist: \(dbFile)"))
             }
         } else { // query completion list
-            let matches = await dictionaryManager.findMatchesInCompletion(spell: spell, limit: 30)
+            let matches = await dictionaryManager.findMatchesInCompletion(spell: spell, limit: limit)
 
             for word in matches {
                 items.append(
@@ -68,12 +74,12 @@ struct SearchCommand: AsyncParsableCommand {
             }
         }
         if items.isEmpty || !items.contains(where: { $0.title.lowercased() == spell.lowercased() }) {
-            items.insert(contentsOf: [Item(title: spell).arg(spell).subtitle("Type enter to check in Eudic")], at: 0)
+            items.insert(Item(title: spell).arg(spell).subtitle("Type enter to check in Eudic"), at: 0)
         }
         items.forEach { ScriptFilter.item($0) }
 
         let t2 = CACurrentMediaTime()
-        fputs("search time duration: \(t2 - t1)\n", stderr)
+        AlfredUtils.log("search time duration: \(t2 - t1)")
 
         let updater = Updater(githubRepo: CommonTools.githubRepo, workflowAssetName: CommonTools.workflowAssetName)
 
@@ -87,11 +93,9 @@ struct SearchCommand: AsyncParsableCommand {
                 )
             }
         }
-        Task {
-            try await updater.check(maxCacheAge: 1440)
-        }
 
-        print(ScriptFilter.output())
+        AlfredUtils.output(ScriptFilter.output())
+        let _ = try await updater.check(maxCacheAge: 1440)
     }
 }
 
