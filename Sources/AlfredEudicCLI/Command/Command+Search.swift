@@ -81,7 +81,7 @@ struct SearchCommand: AsyncParsableCommand {
         let t2 = CACurrentMediaTime()
         AlfredUtils.log("search time duration: \(t2 - t1)")
 
-        let updater = Updater(githubRepo: CommonTools.githubRepo, workflowAssetName: CommonTools.workflowAssetName)
+        let updater = Updater(githubRepo: CommonTools.githubRepo, workflowAssetName: CommonTools.workflowAssetName, checkInterval: 60*60*24)
 
         if let release = updater.latestReleaseInfo, let currentVersion = AlfredConst.workflowVersion {
             if currentVersion.compare(release.tagName, options: .numeric) == .orderedAscending {
@@ -95,8 +95,32 @@ struct SearchCommand: AsyncParsableCommand {
         }
 
         AlfredUtils.output(ScriptFilter.output())
-        let _ = try await updater.check(maxCacheAge: 1440)
+
+        if !updater.cacheValid() {
+            AlfredUtils.log("cache invalid")
+            checkForUpdateSilently()
+        }
+
     }
 }
 
-extension SearchCommand {}
+extension SearchCommand {
+    func checkForUpdateSilently() {
+        do {
+            let process = Process()
+            let executablePath = CommandLine.arguments[0]
+            // child process will exit if parent process exited, so we must use nohup to execute external command
+            process.executableURL = URL(fileURLWithPath: "/usr/bin/nohup")
+            process.arguments = [executablePath, "update", "--action", "check"]
+
+            process.standardOutput = FileHandle(forWritingAtPath: "/dev/null")
+            process.standardError = FileHandle(forWritingAtPath: "/dev/null")
+
+            try process.run()
+//            process.waitUntilExit()
+            AlfredUtils.log("Update check completed in the background")
+        } catch {
+            AlfredUtils.log("Failed to start update process: \(error)")
+        }
+    }
+}
