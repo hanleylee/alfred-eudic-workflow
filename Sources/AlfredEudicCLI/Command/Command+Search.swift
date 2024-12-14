@@ -8,6 +8,7 @@
 import AlfredCore
 import AlfredWorkflowScriptFilter
 import AlfredWorkflowUpdaterCore
+import AppKit
 import ArgumentParser
 import Foundation
 import QuartzCore
@@ -45,18 +46,40 @@ struct SearchCommand: AsyncParsableCommand {
 
         var items: [Item] = []
 
+        items.insert(Item(title: spell).arg(spell).subtitle("Type enter to check in Eudic"), at: 0)
+
         if let dbFile = config.dbFile, !dbFile.isEmpty { // query database
             if FileManager.default.fileExists(atPath: dbFile) {
                 let matches = dictionaryManager.findMatchesInDB(spells: spell.split(separator: " ").map { String($0) }, limit: limit)
                 for entry in matches {
-                    let explainations = (entry.translation ?? entry.definition)?.components(separatedBy: .newlines).joined(separator: "; ")
+                    let explainations = (entry.translation ?? entry.definition)?.components(separatedBy: .newlines).joined(separator: "; ") ?? ""
+                    let phonetic = entry.phonetic ?? ""
+                    let collinsRate = String(repeating: "⭐️", count: entry.collins ?? 0)
+                    var importanceInfo: [String] = []
+                    if let collins = entry.collins {
+                        importanceInfo.append("COLLINS: \(collinsRate)")
+                    }
+                    if let _ = entry.oxford {
+                        importanceInfo.append("OXFORD 3000")
+                    }
+                    if let bnc = entry.bnc, bnc != 0 {
+                        importanceInfo.append("BNC: \(bnc)")
+                    }
+                    if let frq = entry.frq, frq != 0 {
+                        importanceInfo.append("COCA: \(frq)")
+                    }
+                    if let tagInfo = entry.tagInfo {
+                        importanceInfo.append(tagInfo)
+                    }
+                    let title = WorkflowUtils.alignedText(left: entry.word, right: "\(collinsRate)", component: .title)
+                    let subtitle = WorkflowUtils.alignedText(left: explainations, right: "\(phonetic)", component: .subtitle)
                     items.append(
-                        Item(title: entry.word)
-                            .subtitle(explainations ?? "")
+                        Item(title: title)
+                            .subtitle(subtitle)
                             .arg(entry.word)
                             .mods(
                                 Cmd().subtitle(entry.exchangeInfo ?? ""),
-                                Alt().subtitle(entry.phonetic ?? "")
+                                Alt().subtitle(importanceInfo.joined(separator: "; "))
                             )
                     )
                 }
@@ -73,9 +96,8 @@ struct SearchCommand: AsyncParsableCommand {
                 )
             }
         }
-        if items.isEmpty || !items.contains(where: { $0.title.lowercased() == spell.lowercased() }) {
-            items.insert(Item(title: spell).arg(spell).subtitle("Type enter to check in Eudic"), at: 0)
-        }
+//        if items.isEmpty || !items.contains(where: { $0.title.lowercased() == spell.lowercased() }) {
+//        }
         items.forEach { ScriptFilter.item($0) }
 
         let t2 = CACurrentMediaTime()
@@ -100,7 +122,6 @@ struct SearchCommand: AsyncParsableCommand {
             AlfredUtils.log("cache invalid")
             checkForUpdateSilently()
         }
-
     }
 }
 

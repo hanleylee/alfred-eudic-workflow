@@ -17,8 +17,8 @@ public struct StardictEntry {
     public let collins: Int?
     public let oxford: Int?
     public let tag: String?
-    public let bnc: Int
-    public let frq: Int
+    public let bnc: Int?
+    public let frq: Int?
     public let exchange: String?
     public let detail: String?
     public let audio: String?
@@ -47,5 +47,24 @@ extension StardictEntry {
             }
         }
         return infos.joined(separator: "; ")
+    }
+    
+    public var tagInfo: String? {
+        guard let tag else { return nil }
+        let infos: [String] = tag.split(separator: " ").map { t in
+            switch t {
+            case "zk": return "中考"
+            case "gk": return "高考"
+            case "cet4": return "CET4"
+            case "cet6": return "CET6"
+            case "ky": return "考研"
+            case "gre": return "GRE"
+            case "toefl": return "TOEFL"
+            case "ielts": return "IELTS"
+            default: return "Unknown"
+            }
+        }
+        
+        return infos.joined(separator: "/")
     }
 }

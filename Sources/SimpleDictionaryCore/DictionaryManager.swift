@@ -1,5 +1,6 @@
 import Foundation
 import QuartzCore
+import AlfredCore
 
 public struct DictionaryConfig {
     public let completionFile: String
@@ -24,14 +25,14 @@ public class DictionaryManager {
     // MARK: - Must be invoked before call any other function
     
     public func findMatchesInDB(spells: [String], limit: Int = 10) -> [StardictEntry] {
-        fputs("database file: \(config.dbFile ?? "")\n", stderr)
+        AlfredUtils.log("database file: \(config.dbFile ?? "")")
         guard let database else { return [] }
         let res = database.searchWord(spells, limit: limit)
         return res
     }
     
     public func findMatchesInCompletion(spell: String, limit: Int = 10) async -> [String] {
-        fputs("completion file: \(config.completionFile)\n", stderr)
+        AlfredUtils.log("completion file: \(config.completionFile)")
         let completionFileURL = URL(filePath: config.completionFile)
         let completionData = try! Data(contentsOf: completionFileURL)
         let completionContent = String(data: completionData, encoding: .utf8)!
