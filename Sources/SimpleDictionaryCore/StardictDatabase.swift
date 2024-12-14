@@ -6,7 +6,7 @@
 //
 
 import SQLite
-import stdio_h
+import AlfredCore
 
 class StardictDatabase {
     private var db: Connection?
@@ -32,9 +32,9 @@ class StardictDatabase {
     init(databasePath: String) {
         do {
             db = try Connection(databasePath)
-            fputs("Connected to database at \(databasePath)\n", stderr)
+            AlfredUtils.log("Connected to database at \(databasePath)")
         } catch {
-            fputs("Unable to connect to database: \(error)\n", stderr)
+            AlfredUtils.log("Unable to connect to database: \(error)")
         }
     }
 
@@ -64,7 +64,7 @@ class StardictDatabase {
                 results.append(entry)
             }
         } catch {
-            fputs("Failed to fetch words: \(error)\n", stderr)
+            AlfredUtils.log("Failed to fetch words: \(error)")
         }
 
         return results
@@ -86,19 +86,19 @@ class StardictDatabase {
         do {
             results += try db!.prepare(searchQuery)
         } catch {
-            fputs("Failed to fetch prefix results: \(error)\n", stderr)
+            AlfredUtils.log("Failed to fetch prefix results: \(error)")
         }
 
-        if results.count < limit, spells.count == 1 {
-            let remainingCount = limit - results.count
-
-            let finalQuery = stardict.filter(sw.like("%\(searchQuery)%")).limit(remainingCount)
-            do {
-                results += try db!.prepare(finalQuery)
-            } catch {
-                fputs("Failed to fetch prefix results: \(error)\n", stderr)
-            }
-        }
+//        if results.count < limit, spells.count == 1 {
+//            let remainingCount = limit - results.count
+//
+//            let finalQuery = stardict.filter(sw.like("%\(searchQuery)%")).limit(remainingCount)
+//            do {
+//                results += try db!.prepare(finalQuery)
+//            } catch {
+//                fputs("Failed to fetch prefix results: \(error)\n", stderr)
+//            }
+//        }
 
         var entries: [StardictEntry] = []
         for row in results {
