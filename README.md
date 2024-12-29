@@ -24,7 +24,7 @@
 
 ### 查询释义
 
-1. **双击 ⌥ 键, 在有选择文本情况下直接进入 `Eudic` 释义界面, 无选择文本情况下进入自定义搜索界面**
+1. **双击 ⌥ 键, 在有选择文本情况下直接使用选择文本进行查询, 无选择文本情况下进入自定义搜索界面**
 
     ![toggle](img/toggle-to-input.gif)
 
@@ -38,11 +38,15 @@
 
 ### 搜索列表
 
-默认情况下使用内置轻量单词列表将前缀匹配项列出, 同时支持配置 [ECDICT][ECDICT] 的 sqlite 文件进行模糊查找
+默认支持 *轻量搜索* - 使用内置轻量单词列表将前缀匹配项列出
+
+![simple-completion-search](img/simple-completion-search.png)
+
+同时支持用户配置 [ECDICT][ECDICT] 的 Sqlite 数据库替代默认 *轻量搜索*. 启用方式: 在 [Releases](https://github.com/hanleylee/alfred-eudic-workflow/releases) 界面下载 *ecdict.db* 文件, 并在 workflow 中配置 *Database* 值为该文件的本地路径
+
+![config-database](img/config-database.png)
 
 ![ecdict-search](img/ecdict-search.png)
-
-ECDICT 配置方式: [Releases](https://github.com/hanleylee/alfred-eudic-workflow/releases) 界面下载 *ecdict.db* 文件, 并在 workflow 中配置 *Database* 选项
 
 ## Feature
 
