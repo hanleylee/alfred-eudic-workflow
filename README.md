@@ -26,11 +26,11 @@
 
 1. **双击 ⌥ 键, 在有选择文本情况下直接使用选择文本进行查询, 无选择文本情况下进入自定义搜索界面**
 
-    ![toggle](img/toggle-to-input.gif)
-
     ![search-selected](img/search-selected.gif)
 
 2. `Alfred` 搜索框中输入关键字 `e` 进行搜索
+
+    ![toggle](img/toggle-to-input.gif)
 
 ### 朗读发音
 
