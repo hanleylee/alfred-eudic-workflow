@@ -10,6 +10,11 @@
 
 同时使用 **Eudic** 及 **Alfred Power Pack** 的用户
 
+## 环境要求
+
+- Alfred: `>=5.0`
+- macOS: `>=13.0`
+
 ## 安装
 
 1. 进入 [Releases](https://github.com/hanleylee/alfred-eudic-workflow/releases) 界面下载最新版本的 `EudicSearch.alfredworkflow` 文件
