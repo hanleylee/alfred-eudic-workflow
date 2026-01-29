@@ -1,8 +1,15 @@
 [package]
-name = "alfred-eudic-workflow"
+name = "alfred-eudic"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
+description = "Alfred workflow for Eudic dictionary search"
+
+[[bin]]
+name = "alfred-eudic"
+path = "src/main.rs"
 
 [dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+alfred = { git = "https://github.com/hanleylee/alfred-workflow-utils.git", tag = "0.0.3", features = ["script-filter", "updater", "updater-cli"] }
+clap = { version = "4", features = ["env", "derive"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+tokio = { version = "1", features = ["fs", "rt-multi-thread", "macros"] }

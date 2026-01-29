@@ -1,28 +1,59 @@
-use serde::Deserialize;
-use std::collections::HashMap;
-use std::fs;
+mod command;
+mod dictionary;
+mod workflow_utils;
 
-#[derive(Debug, Deserialize)]
-struct AllWordsDictionary(HashMap<String, Vec<String>>);
+use alfred::updater_cli::{UpdateAction, run_default_update};
+use clap::{Parser, Subcommand};
 
-fn main() {
-    // JSON 文件路径
-    let file_path = "all_words_dictionary.json";
+use command::run_search;
 
-    // 读取 JSON 文件
-    let json_data = fs::read_to_string(file_path).expect("Failed to read the JSON file");
+const GITHUB_REPO: &str = "hanleylee/alfred-eudic-workflow";
+const WORKFLOW_ASSET_NAME: &str = "EudicSearch.alfredworkflow";
+const SEARCH_LIMIT: u32 = 30;
 
-    // 反序列化 JSON 数据到 HashMap
-    let dictionary: HashMap<String, Vec<String>> =
-        serde_json::from_str(&json_data).expect("Failed to parse JSON");
+#[derive(Parser)]
+#[command(name = "alfred-eudic")]
+#[command(about = "Tool used to quickly search matched words by partial query")]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
 
-    // 打印反序列化后的数据
-    println!("Deserialized dictionary: {:?}", dictionary);
+#[derive(Subcommand)]
+enum Commands {
+    /// Perform a search query
+    Search {
+        /// File used for completion items
+        #[arg(long, env = "ALFRED_EUDIC_COMPLETION_FILE")]
+        completion_file: Option<String>,
 
-    // 示例：访问某个 key 的值
-    if let Some(words) = dictionary.get("example_key") {
-        println!("Words for 'example_key': {:?}", words);
-    } else {
-        println!("Key 'example_key' not found in the dictionary");
+        /// Database file used for explanation (ECDICT stardict)
+        #[arg(long, env = "ALFRED_EUDIC_DATABASE_FILE")]
+        db_file: Option<String>,
+
+        /// Spell of the word you want to query
+        #[arg(default_value = "are")]
+        spell: String,
+    },
+    /// Update workflow
+    Update {
+        #[command(subcommand)]
+        action: UpdateAction,
+    },
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let cli = Cli::parse();
+    match cli.command {
+        Commands::Search { completion_file, db_file, spell } => run_search(SearchArgs {completion_file, db_file, spell }).await?,
+        Commands::Update { action } => run_default_update(GITHUB_REPO, WORKFLOW_ASSET_NAME, action).await?,
     }
+    Ok(())
+}
+
+pub struct SearchArgs {
+    pub completion_file: Option<String>,
+    pub db_file: Option<String>,
+    pub spell: String,
 }
