@@ -84,7 +84,7 @@ pub async fn run_search(args: SearchArgs) -> Result<(), Box<dyn std::error::Erro
     AlfredUtils::log(format!("search time duration: {:?}", t2 - t1));
 
     let updater = Updater::new(crate::GITHUB_REPO, crate::WORKFLOW_ASSET_NAME, Duration::from_secs(60 * 60 * 24));
-    let alfred = AlfredConst::from_env();
+    let alfred = AlfredConst::shared();
     if let Some(cached) = updater.read_cached_release().await.ok().and_then(|o| o) {
         if updater.cache_valid(&cached) {
             if let Some(ref current_version) = alfred.workflow_version {

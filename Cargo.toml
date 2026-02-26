@@ -9,7 +9,8 @@ name = "alfred-eudic"
 path = "src/main.rs"
 
 [dependencies]
-alfred = { git = "https://github.com/hanleylee/alfred-workflow-utils.git", tag = "0.0.3", features = ["script-filter", "updater", "updater-cli"] }
+alfred = { git = "https://github.com/hanleylee/alfred-workflow-utils.git", tag = "0.0.4", features = ["script-filter", "updater", "updater-cli"] }
+#alfred = { path = "../alfred-workflow-utils/alfred", features = ["script-filter", "updater", "updater-cli"] }
 clap = { version = "4", features = ["env", "derive"] }
 rusqlite = { version = "0.32", features = ["bundled"] }
 tokio = { version = "1", features = ["fs", "rt-multi-thread", "macros"] }
