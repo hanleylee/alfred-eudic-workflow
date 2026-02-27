@@ -17,7 +17,7 @@ dependencies = [
 [[package]]
 name = "alfred"
 version = "0.1.0"
-source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.4#6551de79f985fd35cffce13721f93bfacca28d8a"
+source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.5#ec2fd33742d7aa2f00a9da0a3945bcf3840ba858"
 dependencies = [
  "alfred_core",
  "alfred_script_filter",
@@ -38,12 +38,12 @@ dependencies = [
 [[package]]
 name = "alfred_core"
 version = "0.1.0"
-source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.4#6551de79f985fd35cffce13721f93bfacca28d8a"
+source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.5#ec2fd33742d7aa2f00a9da0a3945bcf3840ba858"
 
 [[package]]
 name = "alfred_script_filter"
 version = "0.1.0"
-source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.4#6551de79f985fd35cffce13721f93bfacca28d8a"
+source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.5#ec2fd33742d7aa2f00a9da0a3945bcf3840ba858"
 dependencies = [
  "once_cell",
  "serde",
@@ -53,7 +53,7 @@ dependencies = [
 [[package]]
 name = "alfred_updater"
 version = "0.1.0"
-source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.4#6551de79f985fd35cffce13721f93bfacca28d8a"
+source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.5#ec2fd33742d7aa2f00a9da0a3945bcf3840ba858"
 dependencies = [
  "alfred_core",
  "directories",
@@ -67,7 +67,7 @@ dependencies = [
 [[package]]
 name = "alfred_updater_cli"
 version = "0.1.0"
-source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.4#6551de79f985fd35cffce13721f93bfacca28d8a"
+source = "git+https://github.com/hanleylee/alfred-workflow-utils.git?tag=0.0.5#ec2fd33742d7aa2f00a9da0a3945bcf3840ba858"
 dependencies = [
  "alfred_updater",
  "clap",

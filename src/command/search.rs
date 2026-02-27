@@ -2,7 +2,7 @@ use std::process::Command;
 use std::time::{Duration, Instant};
 use alfred::core::{AlfredConst, AlfredUtils};
 use alfred::script_filter::{Item, Mod, ScriptFilter, Variable};
-use alfred::updater::Updater;
+use alfred::updater::{Updater, version_compare};
 use crate::dictionary::{DictionaryConfig, DictionaryManager};
 use crate::{SEARCH_LIMIT, SearchArgs, workflow_utils};
 
@@ -112,24 +112,6 @@ pub async fn run_search(args: SearchArgs) -> Result<(), Box<dyn std::error::Erro
     }
 
     Ok(())
-}
-
-fn version_compare(a: &str, b: &str) -> std::cmp::Ordering {
-    let pa = parse_version_parts(a);
-    let pb = parse_version_parts(b);
-    let n = pa.len().max(pb.len());
-    for i in 0..n {
-        let va = pa.get(i).copied().unwrap_or(0);
-        let vb = pb.get(i).copied().unwrap_or(0);
-        if va != vb {
-            return va.cmp(&vb);
-        }
-    }
-    std::cmp::Ordering::Equal
-}
-
-fn parse_version_parts(s: &str) -> Vec<u64> {
-    s.split(|c: char| c == '.' || c == '-' || c == '_' || c == 'v').filter(|p| !p.is_empty()).map(|p| p.parse::<u64>().unwrap_or(0)).collect()
 }
 
 fn check_for_update_silently() {
