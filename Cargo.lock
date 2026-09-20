@@ -32,6 +32,7 @@ dependencies = [
  "alfred",
  "clap",
  "rusqlite",
+ "serde_json",
  "tokio",
 ]
 

@@ -60,3 +60,71 @@ fn row_to_entry(row: &rusqlite::Row<'_>) -> Result<StardictEntry, rusqlite::Erro
         audio: row.get(14)?,
     })
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn memory_db_with_rows(rows: &[(&str, &str)]) -> StardictDatabase {
+        let db = StardictDatabase { conn: Connection::open_in_memory().unwrap() };
+        db.conn
+            .execute_batch(
+                "CREATE TABLE stardict (
+                    id INTEGER PRIMARY KEY,
+                    word TEXT NOT NULL,
+                    sw TEXT NOT NULL,
+                    phonetic TEXT,
+                    definition TEXT,
+                    translation TEXT,
+                    pos TEXT,
+                    collins INTEGER,
+                    oxford INTEGER,
+                    tag TEXT,
+                    bnc INTEGER,
+                    frq INTEGER,
+                    exchange TEXT,
+                    detail TEXT,
+                    audio TEXT
+                );",
+            )
+            .unwrap();
+        for (i, (word, sw)) in rows.iter().enumerate() {
+            db.conn
+                .execute(
+                    "INSERT INTO stardict (id, word, sw, translation) VALUES (?1, ?2, ?3, ?4)",
+                    rusqlite::params![i as i64 + 1, word, sw, format!("tr-{word}")],
+                )
+                .unwrap();
+        }
+        db
+    }
+
+    #[test]
+    fn search_word_returns_empty_for_empty_spell() {
+        let db = memory_db_with_rows(&[("apple", "apple")]);
+        assert!(db.search_word("", 10).unwrap().is_empty());
+    }
+
+    #[test]
+    fn search_word_prefix_match_prefers_exact_then_shorter() {
+        let db = memory_db_with_rows(&[("app", "app"), ("apple", "apple"), ("application", "application"), ("banana", "banana")]);
+        let words: Vec<_> = db.search_word("app", 10).unwrap().into_iter().map(|e| e.word).collect();
+        assert_eq!(words, vec!["app", "apple", "application"]);
+    }
+
+    #[test]
+    fn search_word_respects_limit() {
+        let db = memory_db_with_rows(&[("cat", "cat"), ("catch", "catch"), ("category", "category")]);
+        let words: Vec<_> = db.search_word("cat", 2).unwrap().into_iter().map(|e| e.word).collect();
+        assert_eq!(words, vec!["cat", "catch"]);
+    }
+
+    #[test]
+    fn search_word_maps_row_fields() {
+        let db = memory_db_with_rows(&[("go", "go")]);
+        let entry = &db.search_word("go", 1).unwrap()[0];
+        assert_eq!(entry.word, "go");
+        assert_eq!(entry.sw, "go");
+        assert_eq!(entry.translation.as_deref(), Some("tr-go"));
+    }
+}

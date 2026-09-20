@@ -100,3 +100,67 @@ async fn split_lines_concurrent(content: &str) -> Vec<String> {
     }
     parts.into_iter().flatten().collect()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    fn sorted_words(words: &[&str]) -> Vec<String> {
+        words.iter().map(|s| (*s).to_string()).collect()
+    }
+
+    fn write_temp_completion(content: &str) -> std::path::PathBuf {
+        use std::sync::atomic::{AtomicU64, Ordering};
+        static COUNTER: AtomicU64 = AtomicU64::new(0);
+        let nanos = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_nanos();
+        let n = COUNTER.fetch_add(1, Ordering::Relaxed);
+        let path = std::env::temp_dir().join(format!("alfred-eudic-test-{nanos}-{n}.txt"));
+        let mut file = std::fs::File::create(&path).expect("create temp completion file");
+        file.write_all(content.as_bytes()).expect("write completion content");
+        path
+    }
+
+    #[test]
+    fn binary_search_finds_first_prefix_match() {
+        let words = sorted_words(&["apple", "apply", "banana", "band", "cat"]);
+        assert_eq!(binary_search_match_prefix(&words, "app"), Some(0));
+        assert_eq!(binary_search_match_prefix(&words, "ban"), Some(2));
+        assert_eq!(binary_search_match_prefix(&words, "cat"), Some(4));
+    }
+
+    #[test]
+    fn binary_search_returns_none_when_no_prefix_match() {
+        let words = sorted_words(&["apple", "banana", "cat"]);
+        assert_eq!(binary_search_match_prefix(&words, "dog"), None);
+        assert_eq!(binary_search_match_prefix(&words, "applex"), None);
+        assert_eq!(binary_search_match_prefix(&[], "a"), None);
+    }
+
+    #[tokio::test]
+    async fn split_lines_concurrent_splits_by_newline() {
+        let lines = split_lines_concurrent("a\nb\nc\n").await;
+        assert_eq!(lines, vec!["a", "b", "c"]);
+    }
+
+    #[tokio::test]
+    async fn find_matches_in_completion_returns_prefix_matches_up_to_limit() {
+        let path = write_temp_completion("apple\napply\napricot\nbanana\nband\n");
+        let path_str = path.to_string_lossy().to_string();
+        let manager = DictionaryManager::new(DictionaryConfig::new(Some(path_str.clone()), None));
+        let matches = manager.find_matches_in_completion(&path_str, "app", 2).await;
+        let _ = std::fs::remove_file(&path);
+        assert_eq!(matches, vec!["apple", "apply"]);
+    }
+
+    #[tokio::test]
+    async fn find_matches_in_completion_returns_empty_when_no_match() {
+        let path = write_temp_completion("apple\nbanana\n");
+        let path_str = path.to_string_lossy().to_string();
+        let manager = DictionaryManager::new(DictionaryConfig::new(Some(path_str.clone()), None));
+        let matches = manager.find_matches_in_completion(&path_str, "zzz", 10).await;
+        let _ = std::fs::remove_file(&path);
+        assert!(matches.is_empty());
+    }
+}
