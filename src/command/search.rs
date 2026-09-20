@@ -20,12 +20,13 @@ pub async fn run_search(args: SearchArgs) -> Result<(), Box<dyn std::error::Erro
     let manager = DictionaryManager::new(config);
 
     let mut items: Vec<Item> = Vec::new();
-    items.push(Item::new(&args.spell).arg(&args.spell).subtitle("Type enter to check in Eudic"));
+    let mut exact_match = false;
 
     if let Some(ref db_file) = args.db_file {
         if !db_file.is_empty() && std::path::Path::new(db_file).exists() {
             let spell: String = args.spell.split_whitespace().collect();
             let matches = manager.find_matches_in_db(&spell, SEARCH_LIMIT);
+            exact_match = matches.first().is_some_and(|e| e.word.eq_ignore_ascii_case(&spell));
             for entry in matches {
                 let explanation = entry.translation.as_ref().or(entry.definition.as_ref()).map(|s| s.replace('\n', "; ")).unwrap_or_default();
                 let phonetic = entry.phonetic.as_deref().unwrap_or("");
@@ -68,12 +69,17 @@ pub async fn run_search(args: SearchArgs) -> Result<(), Box<dyn std::error::Erro
     } else if let Some(completion_file) = args.completion_file {
         if !completion_file.is_empty() && std::path::Path::new(&completion_file).exists() {
             let matches = manager.find_matches_in_completion(&completion_file, &args.spell, SEARCH_LIMIT).await;
+            exact_match = matches.first().is_some_and(|w| w.eq_ignore_ascii_case(&args.spell));
             for word in matches {
                 items.push(Item::new(&word).arg(&word));
             }
-        }else {
+        } else {
             items.push(Item::new(format!("completion_file not exist: {}", completion_file)));
         }
+    }
+
+    if !exact_match {
+        items.insert(0, Item::new(&args.spell).arg(&args.spell).subtitle("Type enter to check in Eudic"));
     }
 
     for item in items {

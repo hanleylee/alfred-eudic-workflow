@@ -16,7 +16,7 @@ impl StardictDatabase {
         Ok(Self { conn })
     }
 
-    /// Search for words by spell(s). Single spell: prefix match on `sw`. Multiple: LIKE %spell% each.
+    /// Search for words by spell: prefix match on `sw`, exact `word` match first, then by length and alphabet.
     pub fn search_word(&self, spell: &str, limit: u32) -> Result<Vec<StardictEntry>, rusqlite::Error> {
         if spell.is_empty() {
             return Ok(Vec::new());
@@ -27,6 +27,7 @@ impl StardictDatabase {
         SELECT id, word, sw, phonetic, definition, translation, pos, collins, oxford, tag, bnc, frq, exchange, detail, audio
         FROM {TABLE}
         WHERE sw LIKE '{spell}%'
+        ORDER BY (word = '{spell}') DESC, length(word), word
         LIMIT {limit_i}
         ",
         );
